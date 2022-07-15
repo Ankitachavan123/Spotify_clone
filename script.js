@@ -5,6 +5,8 @@ let songIndex = 0;
 let audioElement = new Audio('songs/1.mp3');
 let masterPlay = document.getElementById('masterPlay');
 let myProgressBar = document.getElementById('myProgressBar');
+let gif = document.getElementById('gif');
+
 
 let songs = [
     {songName: "Dil Dhadkne do", filePath: "songs/1.mp3", coverPath: "covers/1.jpg"},
@@ -29,16 +31,25 @@ masterPlay.addEventListener('click', ()=>{
     audioElement.play();
     masterPlay.classList.remove('fa-play-circle');
     masterPlay.classList.add('fa-pause-circle');
+    gif.style.opacity = 1;
   }
   else
   {
     audioElement.pause();
     masterPlay.classList.remove('fa-pause-circle');
     masterPlay.classList.add('fa-play-circle');
+    gif.style.opacity = 0;
   }
 })
 //Listen to Events
-myProgressBar.addEventListener('timeupdate', ()=>{
-    console.log('timeupdate');
+audioElement.addEventListener('timeupdate', ()=>{
     // update seekbar
+    progress = parseInt((audioElement.currentTime/audioElement.duration)* 100);    //This formula is for calculating the percentage to show it in progress bar
+    console.log(progress);
+    myProgressBar.value = progress;
 })
+
+myProgressBar.addEventListener('change', ()=>{
+  audioElement.currentTime = myProgressBar.value * audioElement.duration / 100;
+})
+
